@@ -111,6 +111,15 @@ def set_page(wiki, page, page_id, clist, flist):
     # Отправка страницы в DokuWiki
     wiki.pages.set(page_id, new_page)
 
+# Проверка наличия ФИО в списке
+def find_FIO(list, fio):
+    f = -1
+    for i in range(len(list)):
+        if list[i][0] == fio:
+            f = i
+            break
+    return f
+
 # Начало программы
 if __name__ == '__main__':
     try:
@@ -131,6 +140,10 @@ if __name__ == '__main__':
         for row in file:
             # Набор данных 
             if department == row[0] and subdivision == row[1]:
+                # Пропуск дубликатов
+                if (find_FIO(current_list_f, row[2]) >= 0):
+                    print('Пропущена запись c дублирующимся ФИО: {0} для {1} {2}'.format(row[2], row[1], row[0]))
+                    continue
                 current_list_f.append(row[2:])
             # Обработка данных
             else:
